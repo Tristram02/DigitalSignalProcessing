@@ -1,7 +1,9 @@
 import { Tooltip } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Line, Scatter } from "react-chartjs-2";
 
 export const Chart = ({noise, time}) => {
+
+    // const dataPoints = noise?.map((n, index) => ({x: time[index], y: n}));
 
     const data = {
         labels: time,
@@ -13,7 +15,7 @@ export const Chart = ({noise, time}) => {
             borderColor: 'rgba(255, 99, 132)',
             borderWidth: 4,
             tension: 0.5,
-            pointRadius: 0.02,
+            pointRadius: 2,
             pointHoverRadius: 5
           },
         ],

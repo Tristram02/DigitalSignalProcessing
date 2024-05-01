@@ -10,6 +10,17 @@ CORS(app)
 signal = Signals()
 operation = Operations()
 
+
+def Calculate(signal, params):
+    avg = operation.Average(signal, params['t1'], params['t1'] + params['d'])
+    avgabs = operation.AverageAbsolute(signal, params['t1'], params['t1'] + params['d'])
+    eff = operation.EffectiveVariance(signal, params['t1'], params['t1'] + params['d'])
+    var = operation.Variance(signal, params['t1'], params['t1'] + params['d'])
+    power = operation.AveragePower(signal, params['t1'], params['t1'] + params['d'])
+
+    values = {'avg': avg, 'avgabs': avgabs, 'eff': eff, 'var': var, 'power': power}
+    return values
+
 @app.route('/signal/<option>', methods=['POST'])
 def create_signal(option: int):
     params = request.get_json()
@@ -37,10 +48,11 @@ def create_signal(option: int):
     if option in functions:
         signal.SetParameters(params)
         n, t, b = functions[option]()
+        values = Calculate(n, params)
         if type(n) is list:
-            return jsonify({'noise': n, 'time': t.tolist()}), 200
+            return jsonify({'noise': n, 'time': t.tolist(), 'values': values}), 200
         else:
-            return jsonify({'noise': n.tolist(), 'time': t.tolist()}), 200
+            return jsonify({'noise': n.tolist(), 'time': t.tolist(), 'values': values}), 200
     else:
         return jsonify({'error': 'option not found'}), 400
 
@@ -60,10 +72,11 @@ def do_operation(option: int):
     option = int(option)
     if option in functions:
         n = functions[option](params['firstSignal']['data'], params['secondSignal']['data'])
+        values = Calculate(n, params['firstSignal']['params'])
         if type(n) is list:
-            return jsonify({'noise': n, 'time': params['firstSignal']['time']}), 200
+            return jsonify({'noise': n, 'time': params['firstSignal']['time'], 'values': values}), 200
         else:
-            return jsonify({'noise': n.tolist(), 'time': params['firstSignal']['time']}), 200
+            return jsonify({'noise': n.tolist(), 'time': params['firstSignal']['time'], 'values': values}), 200
     else:
         return jsonify({'error': 'option not found'}), 400
 

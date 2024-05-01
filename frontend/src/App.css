@@ -184,6 +184,27 @@ div.app-container fieldset.operations div.btn {
   align-self: center;
 }
 
+div.app-container div.calculated-parameters {
+  background-color: #ffffff1c;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  width: 100%;
+  height: 20%;
+  -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  border-radius: 10px;
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f7f7f7;
+}
+
 div.app-container div.files label {
   cursor: pointer;
   background-color: #32d692;

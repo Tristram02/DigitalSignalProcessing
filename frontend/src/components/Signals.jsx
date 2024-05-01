@@ -15,7 +15,7 @@ const Type = {
     11: 'Szum impulsywny',
 }
 
-export const Signals = ({setSignal, parameters}) => {
+export const Signals = ({setSignal, parameters, setValues}) => {
 
     async function handleSignal(option) {
         await fetch(`http://localhost:5000/signal/${option}`, {
@@ -28,7 +28,8 @@ export const Signals = ({setSignal, parameters}) => {
           .then(response => response.text())
           .then(data => {
             data = JSON.parse(data)
-            setSignal(new Signal(Date.now(), Type[option], data.noise, data.time))
+            setValues(data.values);
+            setSignal(new Signal(Date.now(), Type[option], data.noise, data.time, parameters))
           })
           .catch(err => console.error(err));
       }

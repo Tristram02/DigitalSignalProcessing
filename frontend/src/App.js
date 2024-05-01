@@ -27,6 +27,8 @@ function App() {
   const [P, setP] = useState(0);
   const [bins, setBins] = useState(7);
 
+  const [values, setValues] = useState({'avg': 0, 'avgabs': 0, 'eff': 0, 'var': 0, 'power': 0})
+
   const parameters = {A, T, f, d, t1, kw, ts, P, bins};
   const parametersSetters = {setA, setT, setF, setD, setT1, setKw, setTs, setP, setBins}
 
@@ -47,7 +49,7 @@ function App() {
         </div>
 
         <div className='col-2'>
-          <Signals setSignal={setSignal} parameters={parameters}/> 
+          <Signals setSignal={setSignal} parameters={parameters} setValues={setValues}/> 
         </div>
         <div className='col-1'></div>
         <div className='col-5 signal-grid-wrapper'>
@@ -57,11 +59,21 @@ function App() {
       </div>
       <div className='row mt-3 h-100' >
         <div className='col-5' >
-          <Operations signals={signals} setSignal={setSignal}/>
+          <Operations signals={signals} setSignal={setSignal} parameters={parameters} setValues={setValues}/>
         </div>
-        <div className='col-4'>
-
+        <div className='col-1'></div>
+        <div className='col-3'>
+          <div className='calculated-parameters'>
+            <ul>
+              <li>Wartość średnia: {values.avg}</li>
+              <li>Wartość średnia bezwzględna: {values.avgabs}</li>
+              <li>Moc średnia: {values.power}</li>
+              <li>Wariancja sygnału: {values.var}</li>
+              <li>Wartość skuteczna: {values.eff}</li>
+            </ul>
+          </div>
         </div>
+        <div className='col-1'></div>
         <div className='col-2'>
           <div className='files d-flex justify-content-center'>
             <label className='btn' htmlFor='uploadFile'>Dodaj sygnał</label>

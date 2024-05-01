@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { LuDivideCircle, LuMinusCircle, LuPlusCircle, LuXCircle } from 'react-icons/lu';
 import { Signal } from '../classes/Signal';
 
-export const Operations = ({signals, setSignal}) => {
+export const Operations = ({signals, setSignal, parameters, setValues}) => {
 
     const [active, setActive] = useState(-1);
     const [firstSignal, setFirstSignal] = useState(null);
@@ -31,8 +31,9 @@ export const Operations = ({signals, setSignal}) => {
             })
               .then(response => response.text())
               .then(data => {
-                data = JSON.parse(data)
-                setSignal(new Signal(Date.now(), firstSignal.type + " + " +secondSignal.type, data.noise, data.time))
+                data = JSON.parse(data);
+                setValues(data.values);
+                setSignal(new Signal(Date.now(), firstSignal.type + " + " +secondSignal.type, data.noise, data.time, parameters))
               })
               .catch(err => console.error(err));
         }
