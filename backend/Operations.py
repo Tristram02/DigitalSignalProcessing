@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 from typing import Callable
 
@@ -114,3 +116,61 @@ class Operations:
             variance = np.sqrt(self.AveragePower(samples=samples, t1=t1, t2=t2, discrete=discrete))
 
         return variance
+
+    ##################################################################
+
+    def MeanSquareError(self, original, reconstructed):
+        if len(original) != len(reconstructed):
+            return None
+        sum = 0.0
+        for i in range(len(original)):
+            sum += (reconstructed[i] - original[i]) ** 2
+
+        return sum / len(original)
+
+    def SignalToNoiseRatio(self, original, reconstructed):
+        if len(original) != len(reconstructed):
+            return None
+
+        sum_1 = 0.0
+        sum_2 = 0.0
+
+        for i in range(len(original)):
+            sum_1 += (reconstructed[i]) ** 2
+            sum_2 += (original[i] - reconstructed[i]) ** 2
+
+        return 10.0 * np.log10((sum_1 / sum_2 if sum_2 else np.nan))
+
+    def PeakSignalToNoiseRatio(self, original, reconstructed):
+        if len(original) != len(reconstructed):
+            return None
+
+        max = sys.float_info.min
+        sum = 0.0
+
+        for i in range(len(original)):
+            if reconstructed[i] > max:
+                max = reconstructed[i]
+            sum += (reconstructed[i] - original[i]) ** 2
+
+        return 10.0 * np.log10(max / (sum / len(reconstructed)) if sum else np.nan)
+
+    def MaximumDifference(self, original, reconstructed):
+        if len(original) != len(reconstructed):
+            return None
+
+        max_diff = sys.float_info.min
+        for i in range(len(original)):
+            diff = np.abs(original[i] - reconstructed[i])
+            if diff > max_diff:
+                max_diff = diff
+
+        return max_diff
+
+    def EffectiveNumberOfBits(self, original, reconstructed):
+        print(len(reconstructed))
+        print(len(original))
+        try:
+            return (self.SignalToNoiseRatio(reconstructed, original) - 1.76) / 6.02
+        except:
+            return None

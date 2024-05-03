@@ -1,25 +1,41 @@
 import { Tooltip } from "chart.js";
 import { Line, Scatter } from "react-chartjs-2";
 
-export const Chart = ({noise, time}) => {
+export const Chart = ({signal}) => {
 
-    // const dataPoints = noise?.map((n, index) => ({x: time[index], y: n}));
+    let data;
+    if (signal?.discrete) {
+      const dataPoints = signal?.data?.map((n, index) => ({x: signal?.time[index], y: n}));
+      data = {
+          datasets: [
+            {
+              data: dataPoints,
+              backgroundColor: 'rgba(255, 99, 132)',
+              borderColor: 'rgba(255, 99, 132)',
+              borderWidth: 4,
+              tension: 0.5,
+              pointRadius: 2,
+              pointHoverRadius: 5
+            },
+          ],
+        };
+    } else {
+      data = {
+          labels: signal?.time,
+          datasets: [
+            {
+              data: signal?.data,
+              backgroundColor: 'rgba(255, 99, 132)',
+              borderColor: 'rgba(255, 99, 132)',
+              borderWidth: 4,
+              tension: 0,
+              pointRadius: 0.02,
+              pointHoverRadius: 5
+            },
+          ],
+        };
+    }
 
-    const data = {
-        labels: time,
-        datasets: [
-          {
-            // label: 'Signal',
-            data: noise,
-            backgroundColor: 'rgba(255, 99, 132)',
-            borderColor: 'rgba(255, 99, 132)',
-            borderWidth: 4,
-            tension: 0.5,
-            pointRadius: 2,
-            pointHoverRadius: 5
-          },
-        ],
-      };
       
       const options = {
         scales: {
@@ -55,7 +71,11 @@ export const Chart = ({noise, time}) => {
 
     return (
         <div className="chart-wrapper">
-            <Line data={data} options={options}/>
+            {signal?.discrete ?
+              <Scatter data={data} options={options}/>
+            :
+              <Line data={data} options={options}/>
+            }
         </div>
     );
 }

@@ -4,8 +4,15 @@ import { SignalPreview } from "./SignalPreview";
 export const SignalGrid = ({signal, signals, setSignals}) => {
 
     useEffect(() => {
-        if (signal?.data.length) {
-            setSignals(prevSignals => [...prevSignals, signal])
+        if (signal?.data?.length) {
+            setSignals(prevSignals => {
+                const signalExists = prevSignals.some(prevSignal => prevSignal.id === signal.id);
+                if (!signalExists) {
+                  return [...prevSignals, signal];
+                } else {
+                  return prevSignals;
+                }
+              });              
         }
     }, [signal])
     

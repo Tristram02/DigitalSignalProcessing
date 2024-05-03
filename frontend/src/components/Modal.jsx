@@ -7,14 +7,14 @@ export const Modal = ({signal, bins}) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h2>{signal?.type}</h2>
+                        <h2>{signal?.name}</h2>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
                         <div id="carouselExampleControls" className="carousel slide" >
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
-                                    <Chart noise={signal?.data} time={signal?.time} />
+                                    <Chart signal={signal} />
                                 </div>
                                 <div className="carousel-item">
                                     <Histogram data={signal?.data} bins={bins} />

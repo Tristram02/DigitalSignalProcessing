@@ -3,6 +3,9 @@ div.app-container {
   height: 100vh;
   background-size: cover;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 div.app-container h1 {
@@ -22,6 +25,8 @@ div.app-container div.row div.parameters {
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
+  display: flex;
+  align-items: center;
 }
 div.app-container div.row div.parameters div input {
   background-color: #ffffff1c;
@@ -143,7 +148,7 @@ div.app-container fieldset.operations svg:active {
   color: #2dbb80;
 }
 
-div.app-container fieldset.operations select {
+div.app-container select {
   margin-top: 5px;
   width: 100%;
   font-size: 1.15rem;
@@ -157,11 +162,11 @@ div.app-container fieldset.operations select {
   background-color: #ffffff55;
 }
 
-div.app-container fieldset.operations select:focus {
+div.app-container select:focus {
   outline: none;
 }
 
-div.app-container fieldset.operations select option {
+div.app-container select option {
   background-color: #26dd88;
   color: #000;
 }
@@ -184,12 +189,71 @@ div.app-container fieldset.operations div.btn {
   align-self: center;
 }
 
+div.app-container div.btn.compare-btn {
+  background-color: #32d692;
+  width: 50%;
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+div.app-container div.navigation-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+div.app-container div.navigation {
+  background-color: #f7f7f7;
+  width: 90%;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+}
+
+div.app-container div.navigation span {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+div.app-container div.navigation div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+
+div.app-container div.navigation div svg {
+  color: #000;
+  font-size: 2rem;
+  background-color: #32d692;
+  border-radius: 50%;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+div.app-container div.navigation div svg:hover {
+  color: #f7f7f7;
+}
+
 div.app-container div.calculated-parameters {
   background-color: #ffffff1c;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   width: 100%;
-  height: 20%;
   -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
   -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
   box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
@@ -198,11 +262,16 @@ div.app-container div.calculated-parameters {
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
-  font-size: 0.8rem;
+  font-size: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #f7f7f7;
+}
+
+div.app-container div.calculated-parameters ul {
+  margin: unset;
+  padding: 1rem 0rem 1rem 2rem;
 }
 
 div.app-container div.files label {
