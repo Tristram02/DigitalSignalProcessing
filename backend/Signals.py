@@ -157,9 +157,9 @@ class Signals:
         min_val = np.min(signal)
         max_val = np.max(signal)
 
-        levels = np.linspace(min_val, max_val, Ql)
+        levels = np.linspace(min_val, max_val, int(Ql))
 
-        quantized_signal = np.round((np.array(signal) - min_val) / (max_val - min_val) * (Ql - 1))
+        quantized_signal = np.round((np.array(signal) - min_val) / (max_val - min_val) * (int(Ql) - 1))
         quantized_signal = levels[quantized_signal.astype(int)]
 
         return quantized_signal
@@ -168,9 +168,9 @@ class Signals:
         min_val = np.min(signal)
         max_val = np.max(signal)
 
-        levels = np.linspace(min_val, max_val, Ql)
+        levels = np.linspace(min_val, max_val, int(Ql))
 
-        quantized_signal = np.floor((np.array(signal) - min_val) / (max_val - min_val) * (Ql - 1))
+        quantized_signal = np.floor((np.array(signal) - min_val) / (max_val - min_val) * (int(Ql) - 1))
         quantized_signal = levels[quantized_signal.astype(int)]
 
         return quantized_signal
@@ -216,8 +216,8 @@ class Signals:
         index = int(np.floor((t - signal['time'][0]) / (signal['time'][-1] - signal['time'][0]) * len(signal['data'])))
 
         # find range of N (or less) samples
-        first_sample = max(0, index - N // 2)
-        last_sample = min(len(signal['data']), first_sample + N)
+        first_sample = max(0, index - int(N) // 2)
+        last_sample = min(len(signal['data']), first_sample + int(N))
 
         # calculate value
         step = (signal['time'][-1] - signal['time'][0]) / len(signal['data'])
