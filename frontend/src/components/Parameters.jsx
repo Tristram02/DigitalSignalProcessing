@@ -1,87 +1,19 @@
 import React from "react"
+import { ParametersFirstPage } from "./parameters/ParametersFirstPage"
+import { ParametersSecondPage } from "./parameters/ParametersSecondPage"
+import { ParametersThirdPage } from "./parameters/ParametersThirdPage"
 export const Parameters = ({parameters, parametersSetters, page}) => {
 
     return (
         <div className="w-100">
             {page === 1 && (
-                <>
-                    <div className='form-floating'>
-                        <input className='form-control' 
-                        value={parameters.A === 0 ? '' : parameters.A} onChange={e => parametersSetters.setA(e.target.value)} 
-                        id='amplituda' placeholder='0' type='number'></input>
-                        <label htmlFor='amplituda'>Amplituda [A]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.T === 0 ? '' : parameters.T} onChange={e => parametersSetters.setT(e.target.value)} 
-                        id='okres' placeholder='0' type='number'></input>
-                        <label htmlFor='okres'>Okres [T]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.f === 0 ? '' : parameters.f} onChange={e => parametersSetters.setF(e.target.value)} 
-                        id='czestotliwosc' placeholder='0' type='number'></input>
-                        <label htmlFor='czestotliwosc'>Częstotliwość [f]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.d === 0 ? '' : parameters.d} onChange={e => parametersSetters.setD(e.target.value)} 
-                        id='czas' placeholder='0' type='number'></input>
-                        <label htmlFor='czas'>Czas trwania [d]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.t1 === 0 ? '' : parameters.t1} onChange={e => parametersSetters.setT1(e.target.value)} 
-                        id='start' placeholder='0' type='number'></input>
-                        <label htmlFor='start'>Czas początkowy [t<sub>1</sub>]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.kw === 0 ? '' : parameters.kw} onChange={e => parametersSetters.setKw(e.target.value)} 
-                        id='wspolczynnik' placeholder='0' type='number'></input>
-                        <label htmlFor='wspolczynnik'>Współczynnik wypełnienia [k<sub>w</sub>]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.ts === 0 ? '' : parameters.ts} onChange={e => parametersSetters.setTs(e.target.value)} 
-                        id='skok' placeholder='0' type='number'></input>
-                        <label htmlFor='skok'>Czas skoku [t<sub>s</sub>]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.P === 0 ? '' : parameters.P} onChange={e => parametersSetters.setP(e.target.value)} 
-                        id='prawdopodobienstwo' placeholder='0' type='number'></input>
-                        <label htmlFor='prawdopodobienstwo'>Prawdopodobieństwo [P]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control'
-                        value={parameters.bins === 0 ? '' : parameters.bins} onChange={e => parametersSetters.setBins(e.target.value)} 
-                        id='bins' placeholder='0' type='range' min={5} max={20}></input>
-                        <label htmlFor='bins'>Liczba przedziałów histogramu: {parameters.bins}</label>
-                    </div>
-                </>
+                <ParametersFirstPage parameters={parameters} parametersSetters={parametersSetters} />
             )}
             {page === 2 && (
-                <>
-                    <div className='form-floating'>
-                        <input className='form-control' 
-                        value={parameters.fp === 0 ? '' : parameters.fp} onChange={e => parametersSetters.setFp(e.target.value)} 
-                        id='probkowanie' placeholder='0' type='number'></input>
-                        <label htmlFor='probkowanie'>Częstotliwość próbkowania [f<sub>p</sub>]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control' 
-                        value={parameters.ql === 0 ? '' : parameters.ql} onChange={e => parametersSetters.setQl(e.target.value)} 
-                        id='kwantyzacja' placeholder='0' type='number'></input>
-                        <label htmlFor='kwantyzacja'>Poziom kwantyzacji [Q<sub>L</sub>]</label>
-                    </div>
-                    <div className='form-floating'>
-                        <input className='form-control' 
-                        value={parameters.sinc === 0 ? '' : parameters.sinc} onChange={e => parametersSetters.setSinc(e.target.value)} 
-                        id='sinc' placeholder='0' type='number'></input>
-                        <label htmlFor='sinc'>Parametr funkcji sinc [N]</label>
-                    </div>
-                </>
+                <ParametersSecondPage parameters={parameters} parametersSetters={parametersSetters} />
+            )}
+            {page === 3 && (
+                <ParametersThirdPage parameters={parameters} parametersSetters={parametersSetters} />
             )}
         </div>
     )

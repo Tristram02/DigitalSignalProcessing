@@ -40,7 +40,7 @@ export const Histogram = ({data, bins}) => {
                 color: '#32d692',
             },
             grid: {
-                color: '#ffffff55'
+                color: '#00000055'
             }
           },
           y: {
@@ -48,7 +48,7 @@ export const Histogram = ({data, bins}) => {
                 color: '#32d692'
             },
             grid: {
-                color: '#ffffff55'
+                color: '#00000055'
             }
           },
         },
@@ -63,7 +63,7 @@ export const Histogram = ({data, bins}) => {
 
     return (
         <div className="histogram-wrapper">
-            <Bar data={chartData} options={options}/>           
+            <Bar id="histogram" data={chartData} options={options}/>           
         </div>
     )
 }

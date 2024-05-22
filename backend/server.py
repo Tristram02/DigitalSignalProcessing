@@ -162,5 +162,47 @@ def compare():
     else:
         return jsonify({'values': None}), 400
 
+
+@app.route('/filter/<option>', methods=['POST'])
+def filter(option: int):
+    params = request.get_json()
+    signal.SetParameters(params['params'])
+    option = int(option)
+    if option == 0:
+        n, t, d = signal.low_pass_filter(float(params['params']['fp']), float(params['params']['M']), float(params['params']['fo']), float(params['params']['window']))
+    elif option == 1:
+        n, t, d = signal.band_pass_filter(float(params['params']['fp']), float(params['params']['M']), float(params['params']['fo']), float(params['params']['window']))
+    else:
+        n, t, d = signal.high_pass_filter(float(params['params']['fp']), float(params['params']['M']), float(params['params']['fo']), float(params['params']['window']))
+
+    if type(n) is not list:
+        n = n.tolist()
+    if type(t) is not list:
+        t = t.tolist()
+    return jsonify({'data': n, 'time': t, 'discrete': d}), 200
+
+
+@app.route('/convolution', methods=['POST'])
+def convolution():
+    params = request.get_json()
+    n = operation.Convolution(params['h']['data'], params['x']['data'])
+    t = np.linspace(0, len(n) / int(params['h']['params']['fp']), len(n))
+    if type(n) is not list:
+        n = n.tolist()
+    if type(t) is not list:
+        t = t.tolist()
+    return jsonify({'data': n, 'time': t, 'discrete': True}), 200
+
+@app.route('/correlation', methods=['POST'])
+def correlation():
+    params = request.get_json()
+    n = operation.Correlation(params['h']['data'], params['x']['data'])
+    t = np.linspace(0, len(n) / int(params['h']['params']['fp']), len(n))
+    if type(n) is not list:
+        n = n.tolist()
+    if type(t) is not list:
+        t = t.tolist()
+    return jsonify({'data': n, 'time': t, 'discrete': True}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)

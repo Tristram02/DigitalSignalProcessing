@@ -1,8 +1,10 @@
-import { download } from "../functions/Download";
+import { useEffect, useRef, useState } from "react";
+import { download, saveImage } from "../functions/Download";
 import { Chart } from "./Chart";
-import { FaDownload } from 'react-icons/fa6';
+import { FaDownload, FaFileImage, FaMagnifyingGlass } from 'react-icons/fa6';
 
-export const SignalPreview = ({signal, index}) => {
+export const SignalPreview = ({signal, index, setSignal}) => {
+
     return (
         <div className="card">
             <div className="card-img-top text-center">
@@ -17,6 +19,21 @@ export const SignalPreview = ({signal, index}) => {
                         const data = {signal};
                         download(data);
                     }}
+                />
+                <FaFileImage
+                    className="ms-2" 
+                    onClick={() => {
+                        setSignal(signal);
+                        saveImage();
+                    }}
+                />
+                <FaMagnifyingGlass 
+                    className="ms-2"
+                    onClick={() => {
+                        setSignal(signal);
+                    }}
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal"
                 />
             </div>
         </div>

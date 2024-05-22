@@ -14,7 +14,7 @@ export const Modal = ({signal, bins}) => {
                         <div id="carouselExampleControls" className="carousel slide" >
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
-                                    <Chart signal={signal} />
+                                    <Chart id={"chart"} signal={signal} />
                                 </div>
                                 <div className="carousel-item">
                                     <Histogram data={signal?.data} bins={bins} />

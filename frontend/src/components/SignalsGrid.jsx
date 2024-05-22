@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SignalPreview } from "./SignalPreview";
 
-export const SignalGrid = ({signal, signals, setSignals}) => {
+export const SignalGrid = ({signal, signals, setSignals, setSignal}) => {
 
     useEffect(() => {
         if (signal?.data?.length) {
@@ -20,7 +20,7 @@ export const SignalGrid = ({signal, signals, setSignals}) => {
         <div className="row">
             {signals?.map((signal, index) => (
                 <div key={signal.id} className="col-6">
-                    <SignalPreview signal={signal} index={index} />
+                    <SignalPreview setSignal={setSignal} signal={signal} index={index} />
                 </div>
             ))}
         </div>

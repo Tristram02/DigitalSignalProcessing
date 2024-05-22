@@ -174,3 +174,39 @@ class Operations:
             return (self.SignalToNoiseRatio(reconstructed, original) - 1.76) / 6.02
         except:
             return None
+
+    ##################################################################
+
+    def Convolution(self, h, x):
+        finalSignal = []
+
+        M = len(h)
+        N = len(x)
+
+        # Convolve h and x
+        for i in range(M + N - 1):
+            sum = 0.0
+            startK = max(0, i - N + 1)
+            endK = min(M, i + 1)
+            for k in range(startK, endK):
+                sum += h[k] * x[i - k]
+            finalSignal.append(sum)
+
+        return finalSignal
+
+    def Correlation(self, h, x):
+        finalSignal = []
+        M = len(h)  # number of samples in h
+        N = len(x)  # number of samples in x
+
+        # Compute correlation of h and x
+        for i in range(0, M + N - 1):
+            i_real = i - (N - 1)  # translate to real indexes
+            sum = 0.0
+            startK = max(0, i_real)
+            endK = min(M, N + i_real)
+            for k in range(startK, endK):
+                sum += h[k] * x[k - i_real]
+            finalSignal.append(sum)
+
+        return finalSignal

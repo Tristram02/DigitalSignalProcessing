@@ -32,14 +32,17 @@ function App() {
   const [fp, setFp] = useState(10);//czestotliowsc probkowania
   const [ql, setQl] = useState(10);// poziom kwantyzacji
   const [sinc, setSinc] = useState(10);//parametr funkcji sinc
+  const [M, setM] = useState(15);//rzad filtra
+  const [fo, setFo] = useState(4);//czestotliwosc odciecia
+  const [window, setWindow] = useState(1);//czestotliwosc odciecia
 
   const [bins, setBins] = useState(5);
 
   const [values, setValues] = useState({'avg': 0, 'avgabs': 0, 'eff': 0, 'var': 0, 'power': 0});
   const [comparedValues, setComparedValues] = useState({'mse': 0, 'snr': 0, 'psnr': 0, 'md': 0, 'enob': 0});
 
-  const parameters = {A, T, f, d, t1, kw, ts, P, fp, ql, sinc, bins};
-  const parametersSetters = {setA, setT, setF, setD, setT1, setKw, setTs, setP, setFp, setQl, setSinc, setBins}
+  const parameters = {A, T, f, d, t1, kw, ts, P, fp, ql, sinc, M, fo, window, bins};
+  const parametersSetters = {setA, setT, setF, setD, setT1, setKw, setTs, setP, setFp, setQl, setSinc, setM, setFo, setWindow, setBins}
 
   useEffect(() => {
 
@@ -63,7 +66,7 @@ function App() {
           </div>
           <div className='col-1'></div>
           <div className='col-5 signal-grid-wrapper'>
-            <SignalGrid signal={signal} signals={signals} setSignals={setSignals}/>
+            <SignalGrid setSignal={setSignal} signal={signal} signals={signals} setSignals={setSignals}/>
           </div>
           <Modal signal={signal} bins={bins}/>
         </div>
@@ -78,7 +81,7 @@ function App() {
               <div>
                 <PiNumberOne onClick={() => setPage(1)}/>
                 <PiNumberTwo onClick={() => setPage(2)}/>
-                <PiNumberThree />
+                <PiNumberThree onClick={() => setPage(3)}/>
                 <PiNumberFour />
               </div>
             </div>

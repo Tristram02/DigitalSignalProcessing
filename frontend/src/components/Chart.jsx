@@ -1,7 +1,7 @@
 import { Tooltip } from "chart.js";
 import { Line, Scatter } from "react-chartjs-2";
 
-export const Chart = ({signal}) => {
+export const Chart = ({signal, id}) => {
 
     let data;
     if (signal?.discrete) {
@@ -13,7 +13,7 @@ export const Chart = ({signal}) => {
               backgroundColor: 'rgba(255, 99, 132)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 4,
-              tension: 0.5,
+              // tension: 0.5,
               pointRadius: 2,
               pointHoverRadius: 5
             },
@@ -43,10 +43,10 @@ export const Chart = ({signal}) => {
             type: 'linear',
             ticks: {
                 color: '#32d692',
-                stepSize: 0.5
+                // stepSize: 0.5
             },
             grid: {
-                color: '#ffffff55'
+                color: '#00000055'
             }
           },
           y: {
@@ -55,7 +55,7 @@ export const Chart = ({signal}) => {
                 color: '#32d692'
             },
             grid: {
-                color: '#ffffff55'
+                color: '#00000055'
             }
           },
         },
@@ -72,9 +72,9 @@ export const Chart = ({signal}) => {
     return (
         <div className="chart-wrapper">
             {signal?.discrete ?
-              <Scatter data={data} options={options}/>
+              <Scatter id={id} data={data} options={options}/>
             :
-              <Line data={data} options={options}/>
+              <Line id={id} data={data} options={options}/>
             }
         </div>
     );
