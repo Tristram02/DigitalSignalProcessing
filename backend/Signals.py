@@ -1,5 +1,6 @@
 import numpy as np
 from Windows import functions
+from Operations import Operations
 
 class Signals:
     amplitude = 0.5
@@ -11,6 +12,7 @@ class Signals:
     ts = 0
     P = 0
     windows = functions
+    operations = Operations()
 
     def UniformDistributionNoise(self):
         time = np.linspace(0, int(self.d), int(self.f) * int(self.d))
@@ -260,3 +262,16 @@ class Signals:
         result *= self.windows[window](M)
 
         return result, time, True
+
+    def ProbeSignal(self, T):
+        self.d = 10
+        self.f = 400
+        self.amplitude = 1
+        self.T = T
+        signal1, t1, d1 = self.SinusoidalSignal()
+        self.amplitude = 0.6
+        self.T = T / 6 * 2
+        self.kw = 0.3
+        signal2, t2, d2 = self.RectangularSignal()
+
+        return self.operations.Sum(signal1, signal2)

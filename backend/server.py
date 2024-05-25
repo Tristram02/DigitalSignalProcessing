@@ -3,7 +3,7 @@ from flask_cors import CORS
 from Signals import Signals
 from Operations import Operations
 import numpy as np
-import codecs, json
+from Simulation import Environment, DistanceSensor
 
 app = Flask(__name__)
 CORS(app)
@@ -203,6 +203,39 @@ def correlation():
     if type(t) is not list:
         t = t.tolist()
     return jsonify({'data': n, 'time': t, 'discrete': True}), 200
+
+@app.route('/simulate', methods=['POST'])
+def simulate():
+    params = request.get_json()
+    distance_sensor = DistanceSensor(
+        probe_signal_term=float(params['params']['probeTerm']),
+        buffer_length=float(params['params']['buffor']),
+        sample_rate=float(params['params']['fp']),
+        signal_velocity=float(params['params']['signalVelocity']),
+        report_term=float(params['params']['report']),
+        starting_distance=float(params['params']['startingDistance'])
+    )
+    environment = Environment(
+        time_step=float(params['params']['timeStep']),
+        sample_rate=float(params['params']['fp']),
+        signal_velocity=float(params['params']['signalVelocity']),
+        item_velocity=float(params['params']['itemVelocity']),
+        distance_sensor=distance_sensor,
+        start_item_distance=float(params['params']['startingDistance'])
+    )
+
+    results = []
+
+    for _ in range(1000):
+        environment.step()
+        results.append({
+            "time": environment.timestamp,
+            "actual_distance": environment.item_distance,
+            "estimated_distance": distance_sensor.distance
+        })
+
+    return jsonify(results)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

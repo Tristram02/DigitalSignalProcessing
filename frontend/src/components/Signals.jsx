@@ -25,10 +25,11 @@ export const Name = {
     18: "Filtr dolnoprzepustowy",
     19: "Filtr pasmowy",
     20: "Filtr górnoprzepustowy",
+    21: "Symulacja"
 
 }
 
-export const Signals = ({setSignal, signals, parameters, setValues, page}) => {
+export const Signals = ({setSignal, signals, parameters, setValues, setSimulationValues, page}) => {
 
     return (
         <div>
@@ -39,7 +40,7 @@ export const Signals = ({setSignal, signals, parameters, setValues, page}) => {
                 <SignalsSecondPage setSignal={setSignal} signals={signals} parameters={parameters} />
             )}
             {page === 3 && (
-                <SignalsThirdPage setSignal={setSignal} signals={signals} parameters={parameters} />
+                <SignalsThirdPage setSignal={setSignal} signals={signals} parameters={parameters} setSimulationValues={setSimulationValues} />
             )}
         </div>
     )
