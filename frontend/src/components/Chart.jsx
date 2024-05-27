@@ -38,6 +38,10 @@ export const Chart = ({signal, id}) => {
 
       
       const options = {
+        animation: {
+          duration: 10,
+          easing: 'linear'
+        },
         scales: {
           x: {
             type: 'linear',

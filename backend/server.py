@@ -207,6 +207,7 @@ def correlation():
 @app.route('/simulate', methods=['POST'])
 def simulate():
     params = request.get_json()
+    signal.SetParameters(params['params'])
     distance_sensor = DistanceSensor(
         probe_signal_term=float(params['params']['probeTerm']),
         buffer_length=float(params['params']['buffor']),
@@ -228,10 +229,18 @@ def simulate():
 
     for _ in range(1000):
         environment.step()
+        if distance_sensor.correlation_signal is not None:
+            correlation_signal = distance_sensor.correlation_signal
+        else:
+            correlation_signal = None
         results.append({
             "time": environment.timestamp,
             "actual_distance": environment.item_distance,
-            "estimated_distance": distance_sensor.distance
+            "estimated_distance": distance_sensor.distance,
+            "probe_signal": distance_sensor.discrete_probe_signal,
+            "feedback_signal": distance_sensor.discrete_feedback_signal.tolist(),
+            "correlation_signal": correlation_signal,
+            "all_times": np.linspace(0, environment.timestamp, len(distance_sensor.discrete_probe_signal)).tolist(),
         })
 
     return jsonify(results)

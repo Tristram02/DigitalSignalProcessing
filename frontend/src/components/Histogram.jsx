@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2"
 export const Histogram = ({data, bins}) => {
     bins = parseInt(bins)
     if (!Array.isArray(data) || !data.length) {
-        console.error('Data is undefined');
+        // console.error('Data is undefined');
         return;
     }
     

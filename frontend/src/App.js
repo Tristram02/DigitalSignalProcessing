@@ -17,7 +17,7 @@ Chart.register(...registerables);
 
 function App() {
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(3);
 
   const [signals, setSignals] = useState([]);
   const [signal, setSignal] = useState(null);
@@ -71,7 +71,7 @@ function App() {
         </div>
 
         <div className='col-2 d-flex align-items-center'>
-          <Signals setSignal={setSignal} signals={signals} parameters={parameters} setValues={setValues} page={page} setSimulationValues={setSimulationValues} />
+          <Signals setSignal={setSignal} signals={signals} parameters={parameters} setValues={setValues} page={page} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
         </div>
         <div className='col-1'></div>
         <div className='col-5 signal-grid-wrapper'>

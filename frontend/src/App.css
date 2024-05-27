@@ -81,6 +81,9 @@ div.modal div.modal-dialog div.modal-content div.modal-body
 div.carousel div.chart-wrapper,
 div.app-container 
 div.modal div.modal-dialog div.modal-content div.modal-body
+div.chart-wrapper,
+div.app-container 
+div.modal div.modal-dialog div.modal-content div.modal-body
 div.carousel div.histogram-wrapper {
   margin-left: auto;
   margin-right: auto;
@@ -287,4 +290,22 @@ div.app-container div.files label {
 
 div.app-container div.files input {
   display: none;
+}
+
+div.simulation-container {
+  width: 100%;
+  flex-direction: row;
+}
+
+div.calculated-parameters-simulation {
+  width: 100%;
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f7f7f7;
 }
