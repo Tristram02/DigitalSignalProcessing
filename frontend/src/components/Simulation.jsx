@@ -19,7 +19,7 @@ export const Simulation = ({probeSignal, feedbackSignal, correlationSignal, simu
                         <div className="d-flex simulation-container">
                             <Chart id={"chart-first"} signal={probeSignal} />
                             <Chart id={"chart-second"} signal={feedbackSignal} />
-                            <Chart id={"chart-third"} signal={probeSignal} />
+                            <Chart id={"chart-third"} signal={correlationSignal} />
                         </div>
                         <div className='calculated-parameters-simulation'>
                             <ul>

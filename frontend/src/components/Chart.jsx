@@ -28,7 +28,7 @@ export const Chart = ({signal, id}) => {
               backgroundColor: 'rgba(255, 99, 132)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 4,
-              tension: 0,
+              tension: 0.5,
               pointRadius: 0.02,
               pointHoverRadius: 5
             },

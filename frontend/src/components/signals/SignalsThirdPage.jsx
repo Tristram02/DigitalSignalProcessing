@@ -52,7 +52,7 @@ export const SignalsThirdPage = ({setSignal, signals, parameters, simulationValu
                 let i = 0;
                 probeData.push(simulationData[i].probe_signal);
                 feedbackData.push(simulationData[i].feedback_signal);
-                correlationData.push(simulationData[i].correlation_signal);
+                
                 timeData.push(simulationData[i].all_times);
                 
                 function update() {
@@ -60,14 +60,18 @@ export const SignalsThirdPage = ({setSignal, signals, parameters, simulationValu
                         return;
                     }
                     setSimulationValues(simulationData[i]);
-                    
+                    if (simulationData[i].correlation_signal != null) {
+                        correlationData.push(simulationData[i].correlation_signal);
+                    }
                     timeData.push(simulationData[i].all_times);
                     
                     i++;
                     if (i < simulationData.length) {
                         setProbeSignal(new Signal(Date.now(), "Simulation", probeData[0], timeData[timeData.length - 1], parameters, false));
                         setFeedbackSignal(new Signal(Date.now(), "Simulation", feedbackData[0], timeData[timeData.length - 1], parameters, false));
-                        setCorrelationSignal(new Signal(Date.now(), "Simulation", correlationData, timeData, parameters, false));
+                        if (correlationData.length > 0) {
+                            setCorrelationSignal(new Signal(Date.now(), "Simulation", correlationData[0], timeData[timeData.length - 1], parameters, false));
+                        }
                         const delay = (simulationData[i].time - simulationData[i-1].time) * 1000;
                         timeoutId = setTimeout(update, delay);
                     }
@@ -129,7 +133,7 @@ export const SignalsThirdPage = ({setSignal, signals, parameters, simulationValu
             className='btn signal-btn'>
             Zatrzymaj symulacje
             </div>
-            <Simulation simulationValues={simulationValues} feedbackSignal={feedbackSignal} probeSignal={probeSignal}/>
+            <Simulation simulationValues={simulationValues} correlationSignal={correlationSignal} feedbackSignal={feedbackSignal} probeSignal={probeSignal}/>
         </>
     )
 }
