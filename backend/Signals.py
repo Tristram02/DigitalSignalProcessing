@@ -221,7 +221,7 @@ class Signals:
                 result[n] = 2.0 / K
             else:
                 result[n] = np.sin(2.0 * np.pi * (n - c) / K) / (np.pi * (n - c))
-            result[n] *= self.windows[window](M)
+        result *= self.windows[window](M)
 
         return result, time, True
 
@@ -240,7 +240,7 @@ class Signals:
             else:
                 result[n] = np.sin(2 * np.pi * (n - c) / K) / (np.pi * (n - c))
             result[n] *= (-1) if n & 0x01 else 1
-            result[n] *= self.windows[window](M)
+        result *= self.windows[window](M)
 
         return result, time, True
 
