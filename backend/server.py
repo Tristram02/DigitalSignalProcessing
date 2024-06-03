@@ -99,21 +99,15 @@ def sampling(function_number: int):
     if bool(params['signal']['discrete']):
         return jsonify({"error": "Discrete signal cannot be sampled"}), 400
 
-    for param in params['signal']['params']:
-        try:
-            params['signal']['params'][param] = float(params['signal']['params'][param])
-        except ValueError:
-            print("Could not convert value to float")
+    signal = params['signal']
+    sample_rate = int(params['sample_rate'])
+    step_size = max(1, len(signal['data']) // sample_rate)
+    sampled_signal = [signal['data'][i] for i in range(0, len(signal['data']), step_size)]
 
-    signal.SetParameters(params['signal']['params'])
-    signal.f = params['sample_rate']
-
-    n, t, b = signal_functions[int(function_number)]()
-
-    if type(n) is list:
-        return jsonify({'noise': n, 'time': t.tolist(), 'discrete': True}), 200
+    if type(sampled_signal) is list:
+        return jsonify({'noise': sampled_signal, 'time': signal['time'], 'discrete': True}), 200
     else:
-        return jsonify({'noise': n.tolist(), 'time': t.tolist(), 'discrete': True}), 200
+        return jsonify({'noise': sampled_signal.tolist(), 'time': signal['time'].tolist(), 'discrete': True}), 200
 
 @app.route('/quantization/<option>', methods=['POST'])
 def quantizate(option: int):
