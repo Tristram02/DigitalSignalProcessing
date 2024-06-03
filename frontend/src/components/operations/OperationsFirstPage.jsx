@@ -37,7 +37,7 @@ export const OperationsFirstPage = ({signals, setSignal, parameters, values, set
               .then(data => {
                 data = JSON.parse(data);
                 setValues(data.values);
-                setSignal(new Signal(Date.now(), firstSignal.name + " + " + secondSignal.name, 
+                setSignal(new Signal(Date.now(), firstSignal.name, 
                         data.noise, data.time, parameters, data.discrete))
               })
               .catch(err => console.error(err));
