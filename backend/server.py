@@ -100,14 +100,14 @@ def sampling(function_number: int):
         return jsonify({"error": "Discrete signal cannot be sampled"}), 400
 
     signal = params['signal']
+    duration = float(params['signal']['params']['d'])
     sample_rate = int(params['sample_rate'])
-    step_size = max(1, len(signal['data']) // sample_rate)
+    num_samples = int(sample_rate * duration)
+    step_size = max(1, len(signal['data']) // num_samples)
     sampled_signal = [signal['data'][i] for i in range(0, len(signal['data']), step_size)]
+    sampled_time = np.linspace(0, duration, len(sampled_signal))
 
-    if type(sampled_signal) is list:
-        return jsonify({'noise': sampled_signal, 'time': signal['time'], 'discrete': True}), 200
-    else:
-        return jsonify({'noise': sampled_signal.tolist(), 'time': signal['time'].tolist(), 'discrete': True}), 200
+    return jsonify({'noise': sampled_signal, 'time': sampled_time.tolist(), 'discrete': True}), 200
 
 @app.route('/quantization/<option>', methods=['POST'])
 def quantizate(option: int):
