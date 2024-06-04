@@ -17,7 +17,7 @@ class DistanceSensor:
         self.distance = starting_distance
 
     def generate_probe_signal(self, timestamp):
-        time = np.linspace(0, 4, int(self.buffer_length * self.sample_rate), endpoint=False)
+        time = np.linspace(timestamp - 2, timestamp + 2, int(self.buffer_length * self.sample_rate), endpoint=False)
         s1 = 1 * np.sin((2 * np.pi / self.probe_signal_term) * (time - 0))  # SinusoidalSignal
         s2 = []
         for t in time:

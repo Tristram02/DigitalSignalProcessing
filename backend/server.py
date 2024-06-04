@@ -1,14 +1,22 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit
 from Signals import Signals
 from Operations import Operations
 import numpy as np
+from time import sleep
 from Simulation import Environment, DistanceSensor
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 signal = Signals()
 operation = Operations()
+
+state = {
+    'pause': False,
+}
 
 signal_functions = {
     1: lambda: signal.UniformDistributionNoise(),
@@ -26,11 +34,11 @@ signal_functions = {
 
 
 def Calculate(signal, params, discrete):
-    avg = operation.Average(signal, params['t1'], params['t1'] + params['d'], discrete)
-    avgabs = operation.AverageAbsolute(signal, params['t1'], params['t1'] + params['d'], discrete)
-    eff = operation.EffectiveVariance(signal, params['t1'], params['t1'] + params['d'], discrete)
-    var = operation.Variance(signal, params['t1'], params['t1'] + params['d'], discrete)
-    power = operation.AveragePower(signal, params['t1'], params['t1'] + params['d'], discrete)
+    avg = operation.Average(signal, params['t1'], params['t1'] + float(params['d']), discrete)
+    avgabs = operation.AverageAbsolute(signal, params['t1'], params['t1'] + float(params['d']), discrete)
+    eff = operation.EffectiveVariance(signal, params['t1'], params['t1'] + float(params['d']), discrete)
+    var = operation.Variance(signal, params['t1'], params['t1'] + float(params['d']), discrete)
+    power = operation.AveragePower(signal, params['t1'], params['t1'] + float(params['d']), discrete)
 
     values = {'avg': avg, 'avgabs': avgabs, 'eff': eff, 'var': var, 'power': power}
     return values
@@ -198,9 +206,8 @@ def correlation():
         t = t.tolist()
     return jsonify({'data': n, 'time': t, 'discrete': True}), 200
 
-@app.route('/simulate', methods=['POST'])
-def simulate():
-    params = request.get_json()
+@socketio.on('start_simulation')
+def simulate(params):
     signal.SetParameters(params['params'])
     distance_sensor = DistanceSensor(
         probe_signal_term=float(params['params']['probeTerm']),
@@ -219,26 +226,36 @@ def simulate():
         start_item_distance=float(params['params']['startingDistance'])
     )
 
-    results = []
+    while 1:
+        if not state['pause']:
+            environment.step()
+            if distance_sensor.correlation_signal is not None:
+                correlation_signal = distance_sensor.correlation_signal
+            else:
+                correlation_signal = None
+            result = {
+                "time": environment.timestamp,
+                "actual_distance": environment.item_distance,
+                "estimated_distance": distance_sensor.distance,
+                "probe_signal": distance_sensor.discrete_probe_signal,
+                "feedback_signal": distance_sensor.discrete_feedback_signal.tolist(),
+                "correlation_signal": correlation_signal,
+                "all_times": np.linspace(environment.timestamp - 2, environment.timestamp + 2, len(distance_sensor.discrete_probe_signal)).tolist(),
+                "correlation_time": np.linspace(environment.timestamp - 2, environment.timestamp + 2,
+                                                len(distance_sensor.correlation_signal) if distance_sensor.correlation_signal is not None else 0).tolist(),
+            }
 
-    for _ in range(1000):
-        environment.step()
-        if distance_sensor.correlation_signal is not None:
-            correlation_signal = distance_sensor.correlation_signal
-        else:
-            correlation_signal = None
-        results.append({
-            "time": environment.timestamp,
-            "actual_distance": environment.item_distance,
-            "estimated_distance": distance_sensor.distance,
-            "probe_signal": distance_sensor.discrete_probe_signal,
-            "feedback_signal": distance_sensor.discrete_feedback_signal.tolist(),
-            "correlation_signal": correlation_signal,
-            "all_times": np.linspace(0, environment.timestamp, len(distance_sensor.discrete_probe_signal)).tolist(),
-        })
+            emit('simulation_data', result)
+            socketio.sleep(0.1)
 
-    return jsonify(results)
+@socketio.on('pause_simulation')
+def pause_simulation():
+    state['pause'] = True
 
+@socketio.on('resume_simulation')
+def resume_simulation():
+    state['pause'] = False
 
 if __name__ == '__main__':
+    socketio.run(app, allow_unsafe_werkzeug=True)
     app.run(debug=True)
