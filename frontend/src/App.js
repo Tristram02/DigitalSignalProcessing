@@ -30,7 +30,7 @@ function App() {
   const [kw, setKw] = useState(0.5);//wspolczynniik wypelnienia
   const [ts, setTs] = useState(2);//czas skoku
   const [P, setP] = useState(0.2);//czestotliowsc
-  const [fp, setFp] = useState(10);//czestotliowsc probkowania
+  const [fp, setFp] = useState(16);//czestotliowsc probkowania
   const [ql, setQl] = useState(10);// poziom kwantyzacji
   const [sinc, setSinc] = useState(10);//parametr funkcji sinc
   const [M, setM] = useState(15);//rzad filtra
@@ -91,7 +91,7 @@ function App() {
               <PiNumberOne onClick={() => setPage(1)} />
               <PiNumberTwo onClick={() => setPage(2)} />
               <PiNumberThree onClick={() => setPage(3)} />
-              <PiNumberFour />
+              <PiNumberFour onClick={() => setPage(4)} />
             </div>
           </div>
         </div>

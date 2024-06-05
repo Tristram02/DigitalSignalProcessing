@@ -2,6 +2,7 @@ import React from "react"
 import { ParametersFirstPage } from "./parameters/ParametersFirstPage"
 import { ParametersSecondPage } from "./parameters/ParametersSecondPage"
 import { ParametersThirdPage } from "./parameters/ParametersThirdPage"
+import { ParametersFourthPage } from "./parameters/ParametersFourthPage"
 export const Parameters = ({parameters, parametersSetters, page}) => {
 
     return (
@@ -14,6 +15,9 @@ export const Parameters = ({parameters, parametersSetters, page}) => {
             )}
             {page === 3 && (
                 <ParametersThirdPage parameters={parameters} parametersSetters={parametersSetters} />
+            )}
+            {page === 4 && (
+                <ParametersFourthPage parameters={parameters} parametersSetters={parametersSetters} />
             )}
         </div>
     )

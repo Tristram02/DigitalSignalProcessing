@@ -3,6 +3,7 @@ import { Signal } from "../classes/Signal";
 import { SignalsFirstPage } from "./signals/SignalsFirstPage";
 import { SignalsSecondPage } from "./signals/SignalsSecondPage";
 import { SignalsThirdPage } from "./signals/SignalsThirdPage";
+import { SignalsFourthPage } from "./signals/SignalsFourthPage";
 
 export const Name = {
     1: 'Rozkład jednostajny',
@@ -41,6 +42,9 @@ export const Signals = ({setSignal, signals, parameters, setValues, simulationVa
             )}
             {page === 3 && (
                 <SignalsThirdPage setSignal={setSignal} signals={signals} parameters={parameters} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
+            )}
+            {page === 4 && (
+                <SignalsFourthPage setSignal={setSignal} signals={signals} parameters={parameters} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
             )}
         </div>
     )

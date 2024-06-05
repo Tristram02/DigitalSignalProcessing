@@ -210,3 +210,154 @@ class Operations:
             finalSignal.append(sum)
 
         return finalSignal
+
+    ############################################################
+
+    def dft(self, signal):
+        N = len(signal)
+        Warg = 2.0 * np.pi / N
+        W = np.exp(-1j * Warg)
+        transformed_signal = []
+
+        for m in range(N):
+            sum_val = complex(0.0)
+            for n in range(N):
+                sum_val += signal[n] * (W ** (m * n))
+            transformed_signal.append(sum_val / N)
+
+        return transformed_signal
+
+    def fft(self, signal):
+        signal = self.mix_samples(signal)
+        W = self.calculate_vector_of_w_params(len(signal))
+
+        N = 2
+        while N <= len(signal):
+            for i in range(len(signal) // N):
+                for m in range(N // 2):
+                    offset = i * N
+                    tmp = signal[offset + m + N // 2] * self.retrieve_w_from_vector(N, -m, W)
+                    signal[offset + m + N // 2] = signal[offset + m] - tmp
+                    signal[offset + m] = signal[offset + m] + tmp
+            N *= 2
+
+        return signal
+
+    def retrieve_w_from_vector(self, N, k, vectorW):
+        k = k % N
+        if k < 0:
+            k += N
+
+        k = k * ((len(vectorW) * 2) // N)
+        if k < len(vectorW):
+            return vectorW[k]
+        else:
+            return vectorW[k - len(vectorW)] * -1
+
+    def calculate_vector_of_w_params(self, N):
+        Warg = 2.0 * np.pi / N
+        W = np.exp(-1j * Warg)
+        allW = [W ** i for i in range(N // 2)]
+        return allW
+
+    def mix_samples(self, samples):
+        N = len(samples)
+        numberOfBits = N.bit_length() - 1
+
+        for i in range(N):
+            newIndex = self.reverse_bits(i, numberOfBits)
+            if newIndex > i:
+                samples[i], samples[newIndex] = samples[newIndex], samples[i]
+        return samples
+
+    def reverse_bits(self, value, numberOfBits):
+        reversed_value = 0
+        for i in range(numberOfBits):
+            if (value >> i) & 1:
+                reversed_value |= 1 << (numberOfBits - 1 - i)
+        return reversed_value
+
+    # Discrete Cosine Transform
+    def dct(self, signal):
+        N = len(signal)
+        transformed_signal = []
+
+        for m in range(N):
+            sum_val = 0.0
+            for n in range(N):
+                sum_val += signal[n] * np.cos(np.pi * (2.0 * n + 1) * m / (2.0 * N))
+            transformed_signal.append(self.c(m, N) * sum_val)
+
+        return transformed_signal
+
+    def c(self, m, N):
+        if m == 0:
+            return np.sqrt(1.0 / N)
+        else:
+            return np.sqrt(2.0 / N)
+
+    # Fast Cosine Transform
+    def fct(self, signal):
+        N = len(signal)
+        y = np.zeros(N)
+
+        for i in range(N // 2):
+            y[i] = signal[2 * i]
+            y[N - 1 - i] = signal[2 * i + 1]
+
+        fft_result = self.fft(y)
+        Warg = -np.pi / (2.0 * N)
+        W = np.exp(1j * Warg)
+        transformed_signal = np.zeros(N)
+
+        for m in range(N):
+            transformed_signal[m] = (W ** m).real * self.c(m, N) * fft_result[m].real
+
+        return transformed_signal
+
+    # Fast Walsh-Hadamard Transform
+    def fwht(self, signal):
+        def mix(x, begin, end):
+            N = end - begin
+            if N == 1:
+                return
+            for i in range(N // 2):
+                tmp = x[int(begin + i)]
+                x[int(begin + i)] = tmp + x[int(begin + N // 2 + i)]
+                x[int(begin + N // 2 + i)] = tmp - x[int(begin + N // 2 + i)]
+            mix(x, begin, int(begin + N // 2))
+            mix(x, int(begin + N // 2), end)
+
+        mix(signal, 0, len(signal))
+        return signal
+
+    # Walsh-Hadamard Transform
+    def wht(self, signal):
+        def generate_hadamard_matrix(m):
+            size = 1
+            factor = 1.0
+            H = np.array([1.0])
+            for i in range(1, m + 1):
+                size *= 2
+                previous = H
+                H = np.zeros(size * size)
+                paste_matrix_into_matrix(previous, size // 2, H, size, 0, 0, factor)
+                paste_matrix_into_matrix(previous, size // 2, H, size, 0, size // 2, factor)
+                paste_matrix_into_matrix(previous, size // 2, H, size, size // 2, 0, factor)
+                paste_matrix_into_matrix(previous, size // 2, H, size, size // 2, size // 2, -factor)
+            return H
+
+        def paste_matrix_into_matrix(src, src_size, dst, dst_size, row, col, factor):
+            for i in range(src_size):
+                for j in range(src_size):
+                    dst[(i + row) * dst_size + (j + col)] = src[i * src_size + j] * factor
+
+        m = int(np.round(np.log2(len(signal))))
+        H = generate_hadamard_matrix(m)
+        X = np.zeros(len(signal))
+        for i in range(len(signal)):
+            sum_val = 0.0
+            for j in range(len(signal)):
+                sum_val += signal[j] * H[i * len(signal) + j]
+            X[i] = sum_val
+        return X

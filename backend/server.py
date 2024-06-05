@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 from Signals import Signals
 from Operations import Operations
 import numpy as np
-from time import sleep
+from time import time
 from Simulation import Environment, DistanceSensor
 
 app = Flask(__name__)
@@ -34,11 +34,11 @@ signal_functions = {
 
 
 def Calculate(signal, params, discrete):
-    avg = operation.Average(signal, params['t1'], params['t1'] + float(params['d']), discrete)
-    avgabs = operation.AverageAbsolute(signal, params['t1'], params['t1'] + float(params['d']), discrete)
-    eff = operation.EffectiveVariance(signal, params['t1'], params['t1'] + float(params['d']), discrete)
-    var = operation.Variance(signal, params['t1'], params['t1'] + float(params['d']), discrete)
-    power = operation.AveragePower(signal, params['t1'], params['t1'] + float(params['d']), discrete)
+    avg = operation.Average(signal, float(params['t1']), float(params['t1']) + float(params['d']), discrete)
+    avgabs = operation.AverageAbsolute(signal, float(params['t1']), float(params['t1']) + float(params['d']), discrete)
+    eff = operation.EffectiveVariance(signal, float(params['t1']), float(params['t1']) + float(params['d']), discrete)
+    var = operation.Variance(signal, float(params['t1']), float(params['t1']) + float(params['d']), discrete)
+    power = operation.AveragePower(signal, float(params['t1']), float(params['t1']) + float(params['d']), discrete)
 
     values = {'avg': avg, 'avgabs': avgabs, 'eff': eff, 'var': var, 'power': power}
     return values
@@ -255,6 +255,105 @@ def pause_simulation():
 @socketio.on('resume_simulation')
 def resume_simulation():
     state['pause'] = False
+
+def prepare_output(transformed_signal):
+    real_parts = [val.real for val in transformed_signal]
+    imag_parts = [val.imag for val in transformed_signal]
+    magnitudes = [abs(val) for val in transformed_signal]
+    phases = [np.arctan2(val.imag, val.real) for val in transformed_signal]
+    return real_parts, imag_parts, magnitudes, phases
+
+@app.route('/dft', methods=['POST'])
+def dft_endpoint():
+    data = request.json
+    signal = [complex(float(val), 0) for val in data['signal']['data']]
+    start_time = time()
+    transformed_signal = operation.dft(signal)
+    end_time = time()
+    execution_time = end_time - start_time
+    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
+    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+                    'time': signal_time, 'execution_time': execution_time}), 200
+
+@app.route('/fft', methods=['POST'])
+def fft_endpoint():
+    data = request.json
+    signal = [complex(float(val), 0) for val in data['signal']['data']]
+    start_time = time()
+    transformed_signal = operation.fft(signal)
+    end_time = time()
+    execution_time = end_time - start_time
+    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
+    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+                    'time': signal_time, 'execution_time': execution_time}), 200
+
+
+@app.route('/dct', methods=['POST'])
+def dct_endpoint():
+    data = request.json
+    signal = [float(val) for val in data['signal']['data']]
+
+    start_time = time()
+    transformed_signal = operation.dct(signal)
+    end_time = time()
+
+    execution_time = end_time - start_time
+    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
+    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+                    'time': signal_time, 'execution_time': execution_time}), 200
+
+
+@app.route('/fct', methods=['POST'])
+def fct_endpoint():
+    data = request.json
+    signal = [float(val) for val in data['signal']['data']]
+
+    start_time = time()
+    transformed_signal = operation.fct(signal)
+    end_time = time()
+
+    execution_time = end_time - start_time
+    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
+    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+                    'time': signal_time, 'execution_time': execution_time}), 200
+
+
+@app.route('/fwht', methods=['POST'])
+def fwht_endpoint():
+    data = request.json
+    signal = [float(val) for val in data['signal']['data']]
+
+    start_time = time()
+    transformed_signal = operation.fwht(signal)
+    end_time = time()
+
+    execution_time = end_time - start_time
+    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
+    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+                    'time': signal_time, 'execution_time': execution_time}), 200
+
+
+@app.route('/wht', methods=['POST'])
+def wht_endpoint():
+    data = request.json
+    signal = [float(val) for val in data['signal']['data']]
+
+    start_time = time()
+    transformed_signal = operation.wht(signal)
+    end_time = time()
+
+    execution_time = end_time - start_time
+
+    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
+    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+                    'time': signal_time, 'execution_time': execution_time}), 200
+
 
 if __name__ == '__main__':
     socketio.run(app, allow_unsafe_werkzeug=True)

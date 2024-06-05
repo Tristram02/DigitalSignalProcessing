@@ -309,3 +309,9 @@ div.calculated-parameters-simulation {
   align-items: center;
   color: #f7f7f7;
 }
+
+div.complex-chart {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
