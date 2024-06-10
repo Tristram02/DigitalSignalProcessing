@@ -60,7 +60,7 @@ div.app-container div.modal div.modal-dialog {
 }
 
 div.app-container div.modal div.modal-dialog div.modal-content {
-  background-color: #ffffff1c;
+  background-color: rgb(2, 45, 110);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   width: 80vw;
