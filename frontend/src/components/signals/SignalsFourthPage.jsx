@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Name } from "../Signals";
 import { Signal } from "../../classes/Signal";
 import { ComplexChart } from "../ComplexCharts";
+import { Modal } from "../Modal";
 
-export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
+export const SignalsFourthPage = ({setTime, setSignal, signals, parameters}) => {
 
     const [operationSignal, setOperationSignal] = useState(null);
     const [algorithm, setAlgorithm] = useState();
@@ -79,11 +80,8 @@ export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
             .then(data => {
                 data = JSON.parse(data);
                 console.log(data);
-                setRealAmplitude(new Signal(Date.now(), "Kosinus", data.real_parts, data.time, parameters, data.discrete))
-                setImaginary(new Signal(Date.now(), "Kosinus", data.imag_parts, data.time, parameters, data.discrete))
-                setComplexAbsolute(new Signal(Date.now(), "Kosinus", data.magnitudes, data.time, parameters, data.discrete))
-                setNumberArgument(new Signal(Date.now(), "Kosinus", data.phases, data.time, parameters, data.discrete))
-                setExecutionTime(data.execution_time);
+                setSignal(new Signal(Date.now(), "Kosinus", data.real_parts, data.time, parameters, data.discrete))
+                setTime(data.execution_time);
             })
             .catch(err => console.error(err));
         } else if (algorithm === "Szybka transformacja" && operationSignal) {
@@ -98,11 +96,8 @@ export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
             .then(data => {
                 data = JSON.parse(data);
                 console.log(data);
-                setRealAmplitude(new Signal(Date.now(), "Kosinus", data.real_parts, data.time, parameters, data.discrete))
-                setImaginary(new Signal(Date.now(), "Kosinus", data.imag_parts, data.time, parameters, data.discrete))
-                setComplexAbsolute(new Signal(Date.now(), "Kosinus", data.magnitudes, data.time, parameters, data.discrete))
-                setNumberArgument(new Signal(Date.now(), "Kosinus", data.phases, data.time, parameters, data.discrete))
-                setExecutionTime(data.execution_time);
+                setSignal(new Signal(Date.now(), "Kosinus", data.real_parts, data.time, parameters, data.discrete))
+                setTime(data.execution_time);
             })
             .catch(err => console.error(err));
         }
@@ -121,11 +116,8 @@ export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
             .then(data => {
                 data = JSON.parse(data);
                 console.log(data);
-                setRealAmplitude(new Signal(Date.now(), "Walsh-Hadamard", data.real_parts, data.time, parameters, data.discrete))
-                setImaginary(new Signal(Date.now(), "Walsh-Hadamard", data.imag_parts, data.time, parameters, data.discrete))
-                setComplexAbsolute(new Signal(Date.now(), "Walsh-Hadamard", data.magnitudes, data.time, parameters, data.discrete))
-                setNumberArgument(new Signal(Date.now(), "Walsh-Hadamard", data.phases, data.time, parameters, data.discrete))
-                setExecutionTime(data.execution_time);
+                setSignal(new Signal(Date.now(), "Walsh-Hadamard", data.real_parts, data.time, parameters, data.discrete))
+                setTime(data.execution_time);
             })
             .catch(err => console.error(err));
         } else if (algorithm === "Szybka transformacja" && operationSignal) {
@@ -140,11 +132,8 @@ export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
             .then(data => {
                 data = JSON.parse(data);
                 console.log(data);
-                setRealAmplitude(new Signal(Date.now(), "Walsh-Hadamard", data.real_parts, data.time, parameters, data.discrete))
-                setImaginary(new Signal(Date.now(), "Walsh-Hadamard", data.imag_parts, data.time, parameters, data.discrete))
-                setComplexAbsolute(new Signal(Date.now(), "Walsh-Hadamard", data.magnitudes, data.time, parameters, data.discrete))
-                setNumberArgument(new Signal(Date.now(), "Walsh-Hadamard", data.phases, data.time, parameters, data.discrete))
-                setExecutionTime(data.execution_time);
+                setSignal(new Signal(Date.now(), "Walsh-Hadamard", data.real_parts, data.time, parameters, data.discrete))
+                setTime(data.execution_time);
             })
             .catch(err => console.error(err));
         }
@@ -182,7 +171,7 @@ export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
                     handleKosinus()
                 }}
                 data-bs-toggle="modal"
-                data-bs-target="#complexChart"
+                data-bs-target="#modal"
                 className='btn signal-btn'>
                 Transformacja kosinusowa
                 </div>
@@ -199,7 +188,7 @@ export const SignalsFourthPage = ({setSignal, signals, parameters}) => {
                     handleWalshHadamard()
                 }}
                 data-bs-toggle="modal"
-                data-bs-target="#complexChart"
+                data-bs-target="#modal"
                 className='btn signal-btn'>
                 Transformacja Walsha-Hadamarda
                 </div>

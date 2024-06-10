@@ -300,9 +300,8 @@ def dct_endpoint():
     end_time = time()
 
     execution_time = end_time - start_time
-    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
-    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
-    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(transformed_signal)).tolist()
+    return jsonify({'real_parts': transformed_signal,
                     'time': signal_time, 'execution_time': execution_time}), 200
 
 
@@ -316,9 +315,8 @@ def fct_endpoint():
     end_time = time()
 
     execution_time = end_time - start_time
-    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
-    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
-    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(transformed_signal)).tolist()
+    return jsonify({'real_parts': transformed_signal.tolist(),
                     'time': signal_time, 'execution_time': execution_time}), 200
 
 
@@ -332,9 +330,8 @@ def fwht_endpoint():
     end_time = time()
 
     execution_time = end_time - start_time
-    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
-    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
-    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(transformed_signal)).tolist()
+    return jsonify({'real_parts': transformed_signal,
                     'time': signal_time, 'execution_time': execution_time}), 200
 
 
@@ -349,9 +346,8 @@ def wht_endpoint():
 
     execution_time = end_time - start_time
 
-    real_parts, imag_parts, magnitudes, phases = prepare_output(transformed_signal)
-    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(real_parts)).tolist()
-    return jsonify({'real_parts': real_parts, 'imag_parts': imag_parts, 'magnitudes': magnitudes, 'phases': phases,
+    signal_time = np.linspace(0, float(data['signal']['params']['d']), len(transformed_signal)).tolist()
+    return jsonify({'real_parts': transformed_signal.tolist(),
                     'time': signal_time, 'execution_time': execution_time}), 200
 
 

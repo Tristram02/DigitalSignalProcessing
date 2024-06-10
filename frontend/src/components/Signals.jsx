@@ -30,7 +30,7 @@ export const Name = {
 
 }
 
-export const Signals = ({setSignal, signals, parameters, setValues, simulationValues, setSimulationValues, page}) => {
+export const Signals = ({setTime, setSignal, signals, parameters, setValues, simulationValues, setSimulationValues, page}) => {
 
     return (
         <div>
@@ -44,7 +44,7 @@ export const Signals = ({setSignal, signals, parameters, setValues, simulationVa
                 <SignalsThirdPage setSignal={setSignal} signals={signals} parameters={parameters} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
             )}
             {page === 4 && (
-                <SignalsFourthPage setSignal={setSignal} signals={signals} parameters={parameters} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
+                <SignalsFourthPage setTime={setTime} setSignal={setSignal} signals={signals} parameters={parameters} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
             )}
         </div>
     )

@@ -1,7 +1,7 @@
 import { Chart } from "./Chart";
 import { Histogram } from "./Histogram";
 
-export const Modal = ({signal, bins}) => {
+export const Modal = ({signal, bins, time}) => {
     return (
         <div className="modal fade" tabIndex={-1} id='modal' aria-labelledby="modalLabel" aria-hidden="true">
             <div className="modal-dialog">
@@ -15,6 +15,11 @@ export const Modal = ({signal, bins}) => {
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
                                     <Chart id={"chart"} signal={signal} />
+                                    {
+                                        time && (
+                                            <span style={{color: 'white'}}>Czas: {time}</span>
+                                        )
+                                    }
                                 </div>
                                 <div className="carousel-item">
                                     <Histogram data={signal?.data} bins={bins} />

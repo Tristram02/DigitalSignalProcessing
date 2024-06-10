@@ -43,6 +43,7 @@ function App() {
   const [probeTerm, setProbeTerm] = useState(1);//Okres sygnału sondującego
   const [buffor, setBuffor] = useState(60);//długość bufora
   const [report, setReport] = useState(1);//Okres raportowania
+  const [time, setTime] = useState(0);
 
   const [bins, setBins] = useState(5);
 
@@ -71,13 +72,13 @@ function App() {
         </div>
 
         <div className='col-2 d-flex align-items-center'>
-          <Signals setSignal={setSignal} signals={signals} parameters={parameters} setValues={setValues} page={page} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
+          <Signals setTime={setTime} setSignal={setSignal} signals={signals} parameters={parameters} setValues={setValues} page={page} simulationValues={simulationValues} setSimulationValues={setSimulationValues} />
         </div>
         <div className='col-1'></div>
         <div className='col-5 signal-grid-wrapper'>
           <SignalGrid setSignal={setSignal} signal={signal} signals={signals} setSignals={setSignals} />
         </div>
-        <Modal signal={signal} bins={bins} />
+        <Modal time={time} signal={signal} bins={bins} />
       </div>
       <div className='row mt-3 mb-5' >
         <div className='col-5' >
