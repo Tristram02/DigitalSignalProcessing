@@ -3,6 +3,7 @@ import { Name } from "../Signals";
 import { Signal } from "../../classes/Signal";
 import { ComplexChart } from "../ComplexCharts";
 import { Modal } from "../Modal";
+import { FileUploadComplex } from "../../functions/Upload";
 
 export const SignalsFourthPage = ({setTime, setSignal, signals, parameters}) => {
 
@@ -199,6 +200,22 @@ export const SignalsFourthPage = ({setTime, setSignal, signals, parameters}) => 
                     ))}
                 </select>
             </div>
+            <div 
+            data-bs-toggle="modal"
+            data-bs-target="#complexChart"
+            className='btn signal-btn'>
+            
+            <label className='btn' htmlFor='uploadFileComplex'>Dodaj sygnał o wartościach zespolonych</label>
+            <input className="d-none" id='uploadFileComplex' type="file" onChange={async (event) => {
+                const data = await FileUploadComplex(event.target);
+                console.log(data);
+                setRealAmplitude(data.realAmplitude);
+                setImaginary(data.imaginary);
+                setComplexAbsolute(data.complexAbsolute);
+                setNumberArgument(data.numberArgument);
+            }} />
+            </div>
+                
             <ComplexChart realAmplitude={realAmplitude} imaginary={imaginary} complexAbsolute={complexAbsolute} numberArgument={numberArgument} executionTime={executionTime} />
         </>
     )

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Chart } from "./Chart";
+import { downloadComplex } from "../functions/Download";
 
 export const ComplexChart = ({realAmplitude, imaginary, complexAbsolute, numberArgument, executionTime}) => {
 
@@ -13,6 +14,18 @@ export const ComplexChart = ({realAmplitude, imaginary, complexAbsolute, numberA
                 <div className="modal-content">
                     <div className="modal-header">
                         <h2>W1 oraz W2</h2>
+                        <div className="btn btn-primary ms-2"
+                            onClick={() => {
+                                downloadComplex({ realAmplitude: realAmplitude,
+                                    imaginary: imaginary,
+                                    complexAbsolute: complexAbsolute,
+                                    numberArgument: numberArgument,
+                                    executionTime: executionTime
+                                 })
+                            }}
+                        >
+                            Pobierz
+                        </div>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">

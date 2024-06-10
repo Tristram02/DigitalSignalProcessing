@@ -12,6 +12,19 @@ export function download(data) {
     URL.revokeObjectURL(url);
 }
 
+export function downloadComplex(complexSignalData) {
+    const blob = new Blob([JSON.stringify(complexSignalData)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'complex_signal.bin';
+    link.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
 export function saveImage() {
     const chart = document.getElementById("chart");
     const histogram = document.getElementById("histogram");
