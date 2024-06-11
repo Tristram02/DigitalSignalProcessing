@@ -226,7 +226,7 @@ def simulate(params):
         start_item_distance=float(params['params']['startingDistance'])
     )
 
-    while 1:
+    for i in range(300):
         if not state['pause']:
             environment.step()
             if distance_sensor.correlation_signal is not None:

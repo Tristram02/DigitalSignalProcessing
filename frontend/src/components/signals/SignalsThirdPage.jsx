@@ -31,7 +31,7 @@ export const SignalsThirdPage = ({setSignal, signals, parameters, simulationValu
 
     socket.on('simulation_data', function(data) {
         const simulationData = data;
-
+        console.log(simulationData);
         let timeData = [];
         let correlationTime = [];
         
